@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,46 +11,48 @@
 
 <div class="container">
 
-<h1>Plywood Profit</h1>
+<h2>Plywood Profit Calculator</h2>
 
 <label>Thickness (mm)</label>
-<input id="thickness" type="number" step="0.5" inputmode="decimal">
+<input id="thickness" type="number" step="0.5">
 
 <label>Size</label>
 <select id="size">
-<option value="1220x2440">1220 x 2440</option>
-<option value="915x1830">915 x 1830</option>
+<option value="1220x2440">1220 × 2440</option>
+<option value="915x1830">915 × 1830</option>
 <option value="custom">Custom</option>
 </select>
 
 <div id="customSize">
+
 <label>Width (mm)</label>
-<input id="width" type="text" inputmode="numeric">
+<input id="width" type="text">
 
 <label>Length (mm)</label>
-<input id="length" type="text" inputmode="numeric">
+<input id="length" type="text">
+
 </div>
 
 <label>Bundles</label>
-<input id="bundles" type="text" inputmode="numeric">
+<input id="bundles" type="text">
 
 <label>PCS / Bundle</label>
-<input id="pcsBundle" type="text" inputmode="numeric">
+<input id="pcsBundle" type="text">
 
 <label>EXW VND / PC</label>
-<input id="exwPc" type="text" inputmode="numeric">
+<input id="exwPc" type="text">
 
 <label>EXW VND / CBM</label>
-<input id="exwCbm" type="text" inputmode="numeric">
-
-<label>USD Rate</label>
-<input id="usdRate" type="text" inputmode="numeric">
-
-<label>Logistics VND</label>
-<input id="logistics" type="text" inputmode="numeric">
+<input id="exwCbm" type="text">
 
 <label>CFR USD / CBM</label>
-<input id="cfrUsd" type="text" inputmode="numeric">
+<input id="cfrUsd" type="text">
+
+<label>USD Rate</label>
+<input id="usdRate" type="text">
+
+<label>Logistics (total)</label>
+<input id="logistics" type="text">
 
 <label>Thickness Rule</label>
 <select id="rule">
@@ -65,8 +67,10 @@
 <div>CBM Buy <span id="cbmBuy">0</span></div>
 <div>CBM Sell <span id="cbmSell">0</span></div>
 <div>CBM Diff <span id="cbmDiff">0</span></div>
+<div>EXW Cost <span id="exwCost">0</span></div>
+<div>Revenue <span id="revenue">0</span></div>
 <div>Profit / CBM <span id="profitCbm">0</span></div>
-<div>Total Profit <span id="totalProfit">0</span></div>
+<div class="profitRow">Total Profit <span id="totalProfit">0</span></div>
 
 </div>
 
