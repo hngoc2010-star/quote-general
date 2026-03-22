@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Plywood Profit Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Plywood Profit Calculator</h2>
+
+<div class="grid">
+
+<label>Thickness Buy (mm)</label>
+<input id="thicknessBuy" type="number">
+
+<label>Size</label>
+<select id="size">
+<option value="1220x2440">1220 × 2440</option>
+<option value="915x2405">915 × 2405</option>
+</select>
+
+<label>Bundles</label>
+<input id="bundles" type="number">
+
+<label>PCS / Bundle</label>
+<input id="pcsBundle" type="number">
+
+<label>EXW VND / PC</label>
+<input id="pricePc" type="number">
+
+<label>EXW VND / CBM</label>
+<input id="priceCbm" type="number">
+
+<label>USD Rate</label>
+<input id="usdRate" type="number">
+
+<label>Logistics VND</label>
+<input id="logistics" type="number">
+
+<label>CFR Price USD / CBM</label>
+<input id="cfrPrice" type="number">
+
+<label>Rule</label>
+<select id="rule">
+<option value="plus">CBM buy < CBM sell (+0.5)</option>
+<option value="equal">CBM buy = CBM sell (0)</option>
+<option value="minus">CBM buy > CBM sell (-0.5)</option>
+</select>
+
+</div>
+
+
+<div class="results">
+
+<div>Total PCS <span id="totalPcs">0</span></div>
+<div>CBM Buy <span id="cbmBuy">0</span></div>
+<div>CBM Sell <span id="cbmSell">0</span></div>
+<div>CBM Diff <span id="cbmDiff">0</span></div>
+<div>Profit / CBM <span id="profitCbm">0</span></div>
+<div>Total Profit <span id="profitTotal">0</span></div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

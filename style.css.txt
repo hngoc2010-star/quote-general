@@ -1,0 +1,54 @@
+body{
+font-family: -apple-system;
+background:#f5f6fa;
+margin:0;
+padding:10px;
+}
+
+.container{
+width:410px;
+margin:auto;
+}
+
+h2{
+text-align:center;
+margin-bottom:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+input,select{
+height:38px;
+font-size:16px;
+padding:4px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.results{
+margin-top:12px;
+background:white;
+padding:10px;
+border-radius:10px;
+font-size:18px;
+}
+
+.results div{
+display:flex;
+justify-content:space-between;
+padding:4px 0;
+}
+
+.red{
+color:red;
+font-weight:600;
+}
+
+.blue{
+color:blue;
+font-weight:600;
+}

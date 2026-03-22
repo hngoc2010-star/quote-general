@@ -1,0 +1,88 @@
+const inputs = document.querySelectorAll("input,select")
+
+inputs.forEach(i=>i.addEventListener("input",calculate))
+
+function n(v){
+return Number(v)||0
+}
+
+function format(x){
+return x.toLocaleString("en-US",{maximumFractionDigits:2})
+}
+
+function calculate(){
+
+let thicknessBuy=n(thicknessBuy.value)
+let bundles=n(bundles.value)
+let pcsBundle=n(pcsBundle.value)
+let pricePc=n(pricePc.value)
+let priceCbm=n(priceCbm.value)
+let usdRate=n(usdRate.value)
+let logistics=n(logistics.value)
+let cfr=n(cfrPrice.value)
+
+let width=0
+let length=0
+
+if(size.value=="1220x2440"){
+width=1.22
+length=2.44
+}else{
+width=0.915
+length=2.405
+}
+
+let ruleAdj=0
+
+if(rule.value=="plus") ruleAdj=0.5
+if(rule.value=="equal") ruleAdj=0
+if(rule.value=="minus") ruleAdj=-0.5
+
+let thicknessSell=thicknessBuy+ruleAdj
+
+let totalPcs=bundles*pcsBundle
+
+let cbmBuy=width*length*(thicknessBuy/1000)*totalPcs
+let cbmSell=width*length*(thicknessSell/1000)*totalPcs
+
+let cbmDiff=cbmSell-cbmBuy
+
+let exw=0
+
+if(pricePc>0){
+exw=pricePc*totalPcs
+}else{
+exw=priceCbm*cbmBuy
+}
+
+let revenue=cfr*usdRate*cbmSell
+
+let totalCost=exw+logistics
+
+let profit=revenue-totalCost
+
+let profitCbm=profit/cbmSell
+
+totalPcsEl.innerText=format(totalPcs)
+cbmBuyEl.innerText=format(cbmBuy)
+cbmSellEl.innerText=format(cbmSell)
+cbmDiffEl.innerText=format(cbmDiff)
+profitCbmEl.innerText=format(profitCbm)
+profitTotalEl.innerText=format(profit)
+
+if(profit<0){
+profitTotalEl.className="red"
+profitCbmEl.className="red"
+}else{
+profitTotalEl.className="blue"
+profitCbmEl.className="blue"
+}
+
+}
+
+const totalPcsEl=document.getElementById("totalPcs")
+const cbmBuyEl=document.getElementById("cbmBuy")
+const cbmSellEl=document.getElementById("cbmSell")
+const cbmDiffEl=document.getElementById("cbmDiff")
+const profitCbmEl=document.getElementById("profitCbm")
+const profitTotalEl=document.getElementById("profitTotal")
