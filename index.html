@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,42 +23,42 @@
 <option value="custom">Custom</option>
 </select>
 
-<div id="customSize">
+<div id="customBox">
 
 <label>Width (mm)</label>
-<input id="width" type="text">
+<input id="width" type="number">
 
 <label>Length (mm)</label>
-<input id="length" type="text">
+<input id="length" type="number">
 
 </div>
 
 <label>Bundles</label>
-<input id="bundles" type="text">
+<input id="bundles" type="number">
 
 <label>PCS / Bundle</label>
-<input id="pcsBundle" type="text">
+<input id="pcsBundle" type="number">
 
 <label>EXW VND / PC</label>
-<input id="exwPc" type="text">
+<input id="exwPc" type="number">
 
 <label>EXW VND / CBM</label>
-<input id="exwCbm" type="text">
+<input id="exwCbm" type="number">
 
 <label>CFR USD / CBM</label>
-<input id="cfrUsd" type="text">
+<input id="cfrUsd" type="number">
 
 <label>USD Rate</label>
-<input id="usdRate" type="text">
+<input id="usdRate" type="number">
 
 <label>Logistics (total)</label>
-<input id="logistics" type="text">
+<input id="logistics" type="number">
 
 <label>Thickness Rule</label>
 <select id="rule">
 <option value="0.5">+0.5</option>
-<option value="0.7">+0.7</option>
-<option value="1">+1</option>
+<option value="0">0</option>
+<option value="-0.5">-0.5</option>
 </select>
 
 <div class="result">
