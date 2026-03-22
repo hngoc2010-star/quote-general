@@ -15,7 +15,7 @@ body{
 font-family:-apple-system;
 background:#f4f6f8;
 margin:0;
-padding:10px;
+padding:6px;
 }
 
 .container{
@@ -25,40 +25,42 @@ margin:auto;
 
 h2{
 text-align:center;
-margin-bottom:10px;
+margin:4px 0 8px 0;
+font-size:20px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:8px;
+gap:4px 6px;
 }
 
 label{
-font-size:13px;
+font-size:12px;
+margin-top:2px;
 }
 
 input,select{
-height:36px;
-font-size:16px;
-padding:4px;
-border-radius:6px;
+height:30px;
+font-size:15px;
+padding:2px 4px;
+border-radius:5px;
 border:1px solid #ccc;
 }
 
 .results{
-margin-top:12px;
+margin-top:8px;
 background:white;
-padding:10px;
-border-radius:10px;
-font-size:18px;
-box-shadow:0 2px 6px rgba(0,0,0,0.08);
+padding:8px;
+border-radius:8px;
+font-size:16px;
+box-shadow:0 2px 5px rgba(0,0,0,0.08);
 }
 
 .results div{
 display:flex;
 justify-content:space-between;
-padding:4px 0;
+padding:2px 0;
 }
 
 .red{
@@ -84,7 +86,7 @@ font-weight:600;
 <div class="grid">
 
 <label>Thickness Buy (mm)</label>
-<input id="thicknessBuy" type="number">
+<input id="thicknessBuy">
 
 <label>Size</label>
 <select id="size">
@@ -93,25 +95,25 @@ font-weight:600;
 </select>
 
 <label>Bundles</label>
-<input id="bundles" type="number">
+<input id="bundles">
 
 <label>PCS / Bundle</label>
-<input id="pcsBundle" type="number">
+<input id="pcsBundle">
 
 <label>EXW VND / PC</label>
-<input id="pricePc" type="number">
+<input id="pricePc">
 
 <label>EXW VND / CBM</label>
-<input id="priceCbm" type="number">
+<input id="priceCbm">
 
 <label>USD Rate</label>
-<input id="usdRate" type="number">
+<input id="usdRate">
 
 <label>Logistics VND</label>
-<input id="logistics" type="number">
+<input id="logistics">
 
 <label>CFR USD / CBM</label>
-<input id="cfrPrice" type="number">
+<input id="cfrPrice">
 
 <label>Thickness Rule</label>
 <select id="rule">
@@ -141,31 +143,49 @@ font-weight:600;
 const inputs=document.querySelectorAll("input,select")
 
 inputs.forEach(el=>{
-el.addEventListener("input",calculate)
+el.addEventListener("input",handleInput)
 })
 
-function n(v){
-return Number(v)||0
+function parse(v){
+return Number(v.replace(/,/g,""))||0
 }
 
-function f(v){
+function format(v){
 return v.toLocaleString("en-US",{maximumFractionDigits:2})
+}
+
+function handleInput(e){
+
+let el=e.target
+
+if(el.tagName==="INPUT"){
+
+let num=parse(el.value)
+
+if(num){
+el.value=format(num)
+}
+
+}
+
+calculate()
+
 }
 
 function calculate(){
 
-let thicknessBuy=n(document.getElementById("thicknessBuy").value)
-let bundles=n(document.getElementById("bundles").value)
-let pcsBundle=n(document.getElementById("pcsBundle").value)
+let thicknessBuy=parse(thicknessBuy.value)
+let bundles=parse(bundles.value)
+let pcsBundle=parse(pcsBundle.value)
 
-let pricePc=n(document.getElementById("pricePc").value)
-let priceCbm=n(document.getElementById("priceCbm").value)
+let pricePc=parse(pricePc.value)
+let priceCbm=parse(priceCbm.value)
 
-let usdRate=n(document.getElementById("usdRate").value)
-let logistics=n(document.getElementById("logistics").value)
-let cfr=n(document.getElementById("cfrPrice").value)
+let usdRate=parse(usdRate.value)
+let logistics=parse(logistics.value)
+let cfr=parse(cfrPrice.value)
 
-let rule=n(document.getElementById("rule").value)
+let rule=parse(document.getElementById("rule").value)
 
 let size=document.getElementById("size").value
 
@@ -206,23 +226,20 @@ let profit=revenue-totalCost
 
 let profitCbm=cbmSell?profit/cbmSell:0
 
-document.getElementById("totalPcs").innerText=f(totalPcs)
-document.getElementById("cbmBuy").innerText=f(cbmBuy)
-document.getElementById("cbmSell").innerText=f(cbmSell)
-document.getElementById("cbmDiff").innerText=f(cbmDiff)
+totalPcs.innerText=format(totalPcs)
+cbmBuy.innerText=format(cbmBuy)
+cbmSell.innerText=format(cbmSell)
+cbmDiff.innerText=format(cbmDiff)
 
-let profitTotalEl=document.getElementById("profitTotal")
-let profitCbmEl=document.getElementById("profitCbm")
-
-profitTotalEl.innerText=f(profit)
-profitCbmEl.innerText=f(profitCbm)
+profitTotal.innerText=format(profit)
+profitCbm.innerText=format(profitCbm)
 
 if(profit<0){
-profitTotalEl.className="red"
-profitCbmEl.className="red"
+profitTotal.className="red"
+profitCbm.className="red"
 }else{
-profitTotalEl.className="blue"
-profitCbmEl.className="blue"
+profitTotal.className="blue"
+profitCbm.className="blue"
 }
 
 }
