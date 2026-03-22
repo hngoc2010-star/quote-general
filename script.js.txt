@@ -1,65 +1,114 @@
-body{
-font-family:-apple-system,BlinkMacSystemFont;
-background:#f2f2f7;
-margin:0;
-padding:20px;
+const thickness = document.getElementById("thickness")
+const width = document.getElementById("width")
+const length = document.getElementById("length")
+
+const bundles = document.getElementById("bundles")
+const pcsBundle = document.getElementById("pcsBundle")
+
+const exwPc = document.getElementById("exwPc")
+const exwCbm = document.getElementById("exwCbm")
+
+const cfrUsd = document.getElementById("cfrUsd")
+const usdRate = document.getElementById("usdRate")
+
+const logistics = document.getElementById("logistics")
+const rule = document.getElementById("rule")
+
+const size = document.getElementById("size")
+const customBox = document.getElementById("customBox")
+
+const totalPcs = document.getElementById("totalPcs")
+const cbmBuy = document.getElementById("cbmBuy")
+const cbmSell = document.getElementById("cbmSell")
+const cbmDiff = document.getElementById("cbmDiff")
+
+const exwCost = document.getElementById("exwCost")
+const revenue = document.getElementById("revenue")
+
+const profitCbm = document.getElementById("profitCbm")
+const totalProfit = document.getElementById("totalProfit")
+
+function num(v){
+return Number(v) || 0
 }
 
-.container{
-max-width:500px;
-margin:auto;
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+function sizeChange(){
+
+if(size.value==="custom"){
+
+customBox.style.display="block"
+
+}else{
+
+customBox.style.display="none"
+
+let s=size.value.split("x")
+
+width.value=s[0]
+length.value=s[1]
+
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
+calculate()
+
 }
 
-label{
-display:block;
-margin-top:12px;
-font-weight:500;
+size.addEventListener("change",sizeChange)
+
+function calculate(){
+
+let t=num(thickness.value)
+let w=num(width.value)
+let l=num(length.value)
+
+let b=num(bundles.value)
+let p=num(pcsBundle.value)
+
+let pcs=b*p
+
+let cbm_buy=
+(w/1000)*(l/1000)*(t/1000)*pcs
+
+let cbm_sell=
+(w/1000)*(l/1000)*((t+num(rule.value))/1000)*pcs
+
+let diff=cbm_sell-cbm_buy
+
+let exw=0
+
+if(num(exwPc.value)>0){
+exw=num(exwPc.value)*pcs
+}else{
+exw=num(exwCbm.value)*cbm_buy
 }
 
-input,select{
-width:100%;
-padding:10px;
-margin-top:4px;
-border-radius:8px;
-border:1px solid #ccc;
-font-size:16px;
+let rev=num(cfrUsd.value)*num(usdRate.value)*cbm_sell
+
+let profit=rev-exw-num(logistics.value)
+
+let profit_per_cbm=cbm_sell?profit/cbm_sell:0
+
+totalPcs.innerText=pcs
+cbmBuy.innerText=cbm_buy.toFixed(3)
+cbmSell.innerText=cbm_sell.toFixed(3)
+cbmDiff.innerText=diff.toFixed(3)
+
+exwCost.innerText=Math.round(exw)
+revenue.innerText=Math.round(rev)
+
+profitCbm.innerText=Math.round(profit_per_cbm)
+totalProfit.innerText=Math.round(profit)
+
+if(profit>=0){
+totalProfit.style.color="green"
+}else{
+totalProfit.style.color="red"
 }
 
-.result{
-margin-top:20px;
-background:#f7f7f7;
-padding:15px;
-border-radius:10px;
 }
 
-.result div{
-display:flex;
-justify-content:space-between;
-margin:6px 0;
-}
+document.querySelectorAll("input,select").forEach(el=>{
+el.addEventListener("input",calculate)
+})
 
-#customSize{
-display:none;
-}
-
-.profitRow{
-font-weight:bold;
-font-size:18px;
-}
-
-.positive{
-color:#0a8f2e;
-}
-
-.negative{
-color:#c0392b;
-}
+sizeChange()
