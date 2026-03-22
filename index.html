@@ -1,14 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
 content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Plywood Profit</title>
+<title>Plywood Profit Calculator</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+
+body{
+font-family:-apple-system;
+background:#f4f6f8;
+margin:0;
+padding:10px;
+}
+
+.container{
+width:410px;
+margin:auto;
+}
+
+h2{
+text-align:center;
+margin-bottom:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+}
+
+label{
+font-size:13px;
+}
+
+input,select{
+height:36px;
+font-size:16px;
+padding:4px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.results{
+margin-top:12px;
+background:white;
+padding:10px;
+border-radius:10px;
+font-size:18px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
+}
+
+.results div{
+display:flex;
+justify-content:space-between;
+padding:4px 0;
+}
+
+.red{
+color:red;
+font-weight:600;
+}
+
+.blue{
+color:#0066ff;
+font-weight:600;
+}
+
+</style>
 
 </head>
 
@@ -16,7 +79,7 @@ content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <div class="container">
 
-<h2>Plywood Calculator</h2>
+<h2>Plywood Profit</h2>
 
 <div class="grid">
 
@@ -47,14 +110,14 @@ content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <label>Logistics VND</label>
 <input id="logistics" type="number">
 
-<label>CFR Price USD / CBM</label>
+<label>CFR USD / CBM</label>
 <input id="cfrPrice" type="number">
 
-<label>Rule</label>
+<label>Thickness Rule</label>
 <select id="rule">
-<option value="plus">CBM buy &lt; CBM sell (+0.5)</option>
-<option value="equal">CBM buy = CBM sell (0)</option>
-<option value="minus">CBM buy &gt; CBM sell (-0.5)</option>
+<option value="0.5">+0.5 mm</option>
+<option value="0">0 mm</option>
+<option value="-0.5">-0.5 mm</option>
 </select>
 
 </div>
@@ -72,7 +135,99 @@ content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 </div>
 
-<script src="script.js"></script>
+
+<script>
+
+const inputs=document.querySelectorAll("input,select")
+
+inputs.forEach(el=>{
+el.addEventListener("input",calculate)
+})
+
+function n(v){
+return Number(v)||0
+}
+
+function f(v){
+return v.toLocaleString("en-US",{maximumFractionDigits:2})
+}
+
+function calculate(){
+
+let thicknessBuy=n(document.getElementById("thicknessBuy").value)
+let bundles=n(document.getElementById("bundles").value)
+let pcsBundle=n(document.getElementById("pcsBundle").value)
+
+let pricePc=n(document.getElementById("pricePc").value)
+let priceCbm=n(document.getElementById("priceCbm").value)
+
+let usdRate=n(document.getElementById("usdRate").value)
+let logistics=n(document.getElementById("logistics").value)
+let cfr=n(document.getElementById("cfrPrice").value)
+
+let rule=n(document.getElementById("rule").value)
+
+let size=document.getElementById("size").value
+
+let width=0
+let length=0
+
+if(size=="1220x2440"){
+width=1.22
+length=2.44
+}else{
+width=0.915
+length=2.405
+}
+
+let thicknessSell=thicknessBuy+rule
+
+let totalPcs=bundles*pcsBundle
+
+let cbmBuy=width*length*(thicknessBuy/1000)*totalPcs
+
+let cbmSell=width*length*(thicknessSell/1000)*totalPcs
+
+let cbmDiff=cbmSell-cbmBuy
+
+let exw=0
+
+if(pricePc>0){
+exw=pricePc*totalPcs
+}else{
+exw=priceCbm*cbmBuy
+}
+
+let revenue=cfr*usdRate*cbmSell
+
+let totalCost=exw+logistics
+
+let profit=revenue-totalCost
+
+let profitCbm=cbmSell?profit/cbmSell:0
+
+document.getElementById("totalPcs").innerText=f(totalPcs)
+document.getElementById("cbmBuy").innerText=f(cbmBuy)
+document.getElementById("cbmSell").innerText=f(cbmSell)
+document.getElementById("cbmDiff").innerText=f(cbmDiff)
+
+let profitTotalEl=document.getElementById("profitTotal")
+let profitCbmEl=document.getElementById("profitCbm")
+
+profitTotalEl.innerText=f(profit)
+profitCbmEl.innerText=f(profitCbm)
+
+if(profit<0){
+profitTotalEl.className="red"
+profitCbmEl.className="red"
+}else{
+profitTotalEl.className="blue"
+profitCbmEl.className="blue"
+}
+
+}
+
+</script>
 
 </body>
 </html>
