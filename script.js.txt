@@ -1,56 +1,93 @@
-document.addEventListener("DOMContentLoaded", () => {
+const inputs=document.querySelectorAll("input,select")
 
-const inputs = document.querySelectorAll("input,select")
-
-inputs.forEach(el => {
-el.addEventListener("input", calculate)
+inputs.forEach(el=>{
+el.addEventListener("input",handleInput)
 })
 
-function num(v){
-return Number(v)||0
+function parseNum(v){
+return Number(v.replace(/,/g,""))||0
 }
 
-function format(v){
+function formatNum(v){
 return v.toLocaleString("en-US",{maximumFractionDigits:2})
+}
+
+function formatInput(el){
+
+let start=el.selectionStart
+let value=el.value.replace(/,/g,"")
+
+if(value==="") return
+
+let num=Number(value)
+
+if(isNaN(num)) return
+
+let formatted=num.toLocaleString("en-US")
+
+el.value=formatted
+
+let newPos=formatted.length
+el.setSelectionRange(newPos,newPos)
+
+}
+
+function handleInput(e){
+
+let el=e.target
+
+if(el.type!=="number"){
+formatInput(el)
+}
+
+updateSize()
+
+calculate()
+
+}
+
+function updateSize(){
+
+let size=document.getElementById("size").value
+
+if(size==="1220x2440"){
+width.value=1220
+length.value=2440
+}
+
+if(size==="915x1830"){
+width.value=915
+length.value=1830
+}
+
 }
 
 function calculate(){
 
-let thicknessBuy=num(document.getElementById("thicknessBuy").value)
-let bundles=num(document.getElementById("bundles").value)
-let pcsBundle=num(document.getElementById("pcsBundle").value)
-let pricePc=num(document.getElementById("pricePc").value)
-let priceCbm=num(document.getElementById("priceCbm").value)
-let usdRate=num(document.getElementById("usdRate").value)
-let logistics=num(document.getElementById("logistics").value)
-let cfr=num(document.getElementById("cfrPrice").value)
+let thickness=parseNum(thickness.value)
 
-let size=document.getElementById("size").value
-let rule=document.getElementById("rule").value
+let widthM=parseNum(width.value)/1000
+let lengthM=parseNum(length.value)/1000
 
-let width=0
-let length=0
+let bundles=parseNum(bundles.value)
+let pcsBundle=parseNum(pcsBundle.value)
 
-if(size=="1220x2440"){
-width=1.22
-length=2.44
-}else{
-width=0.915
-length=2.405
-}
+let pricePc=parseNum(pricePc.value)
+let priceCbm=parseNum(priceCbm.value)
 
-let adjust=0
+let usd=parseNum(usdRate.value)
+let logisticsCost=parseNum(logistics.value)
 
-if(rule=="plus") adjust=0.5
-if(rule=="equal") adjust=0
-if(rule=="minus") adjust=-0.5
+let cfrPrice=parseNum(cfr.value)
 
-let thicknessSell=thicknessBuy+adjust
+let rule=parseNum(rule.value)
+
+let thicknessSell=thickness+rule
 
 let totalPcs=bundles*pcsBundle
 
-let cbmBuy=width*length*(thicknessBuy/1000)*totalPcs
-let cbmSell=width*length*(thicknessSell/1000)*totalPcs
+let cbmBuy=widthM*lengthM*(thickness/1000)*totalPcs
+let cbmSell=widthM*lengthM*(thicknessSell/1000)*totalPcs
 
 let cbmDiff=cbmSell-cbmBuy
 
@@ -62,33 +99,28 @@ exw=pricePc*totalPcs
 exw=priceCbm*cbmBuy
 }
 
-let revenue=cfr*usdRate*cbmSell
+let revenue=cfrPrice*usd*cbmSell
 
-let totalCost=exw+logistics
+let totalCost=exw+logisticsCost
 
 let profit=revenue-totalCost
 
 let profitCbm=cbmSell?profit/cbmSell:0
 
-document.getElementById("totalPcs").innerText=format(totalPcs)
-document.getElementById("cbmBuy").innerText=format(cbmBuy)
-document.getElementById("cbmSell").innerText=format(cbmSell)
-document.getElementById("cbmDiff").innerText=format(cbmDiff)
+totalPcs.innerText=formatNum(totalPcs)
+cbmBuy.innerText=formatNum(cbmBuy)
+cbmSell.innerText=formatNum(cbmSell)
+cbmDiff.innerText=formatNum(cbmDiff)
 
-let profitCbmEl=document.getElementById("profitCbm")
-let profitTotalEl=document.getElementById("profitTotal")
-
-profitCbmEl.innerText=format(profitCbm)
-profitTotalEl.innerText=format(profit)
+profitTotal.innerText=formatNum(profit)
+profitCbm.innerText=formatNum(profitCbm)
 
 if(profit<0){
-profitTotalEl.className="red"
-profitCbmEl.className="red"
+profitTotal.className="red"
+profitCbm.className="red"
 }else{
-profitTotalEl.className="blue"
-profitCbmEl.className="blue"
+profitTotal.className="blue"
+profitCbm.className="blue"
 }
 
 }
-
-})
