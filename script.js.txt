@@ -1,30 +1,37 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const inputs = document.querySelectorAll("input,select")
 
-inputs.forEach(i=>i.addEventListener("input",calculate))
+inputs.forEach(el => {
+el.addEventListener("input", calculate)
+})
 
-function n(v){
+function num(v){
 return Number(v)||0
 }
 
-function format(x){
-return x.toLocaleString("en-US",{maximumFractionDigits:2})
+function format(v){
+return v.toLocaleString("en-US",{maximumFractionDigits:2})
 }
 
 function calculate(){
 
-let thicknessBuy=n(thicknessBuy.value)
-let bundles=n(bundles.value)
-let pcsBundle=n(pcsBundle.value)
-let pricePc=n(pricePc.value)
-let priceCbm=n(priceCbm.value)
-let usdRate=n(usdRate.value)
-let logistics=n(logistics.value)
-let cfr=n(cfrPrice.value)
+let thicknessBuy=num(document.getElementById("thicknessBuy").value)
+let bundles=num(document.getElementById("bundles").value)
+let pcsBundle=num(document.getElementById("pcsBundle").value)
+let pricePc=num(document.getElementById("pricePc").value)
+let priceCbm=num(document.getElementById("priceCbm").value)
+let usdRate=num(document.getElementById("usdRate").value)
+let logistics=num(document.getElementById("logistics").value)
+let cfr=num(document.getElementById("cfrPrice").value)
+
+let size=document.getElementById("size").value
+let rule=document.getElementById("rule").value
 
 let width=0
 let length=0
 
-if(size.value=="1220x2440"){
+if(size=="1220x2440"){
 width=1.22
 length=2.44
 }else{
@@ -32,13 +39,13 @@ width=0.915
 length=2.405
 }
 
-let ruleAdj=0
+let adjust=0
 
-if(rule.value=="plus") ruleAdj=0.5
-if(rule.value=="equal") ruleAdj=0
-if(rule.value=="minus") ruleAdj=-0.5
+if(rule=="plus") adjust=0.5
+if(rule=="equal") adjust=0
+if(rule=="minus") adjust=-0.5
 
-let thicknessSell=thicknessBuy+ruleAdj
+let thicknessSell=thicknessBuy+adjust
 
 let totalPcs=bundles*pcsBundle
 
@@ -61,12 +68,16 @@ let totalCost=exw+logistics
 
 let profit=revenue-totalCost
 
-let profitCbm=profit/cbmSell
+let profitCbm=cbmSell?profit/cbmSell:0
 
-totalPcsEl.innerText=format(totalPcs)
-cbmBuyEl.innerText=format(cbmBuy)
-cbmSellEl.innerText=format(cbmSell)
-cbmDiffEl.innerText=format(cbmDiff)
+document.getElementById("totalPcs").innerText=format(totalPcs)
+document.getElementById("cbmBuy").innerText=format(cbmBuy)
+document.getElementById("cbmSell").innerText=format(cbmSell)
+document.getElementById("cbmDiff").innerText=format(cbmDiff)
+
+let profitCbmEl=document.getElementById("profitCbm")
+let profitTotalEl=document.getElementById("profitTotal")
+
 profitCbmEl.innerText=format(profitCbm)
 profitTotalEl.innerText=format(profit)
 
@@ -80,9 +91,4 @@ profitCbmEl.className="blue"
 
 }
 
-const totalPcsEl=document.getElementById("totalPcs")
-const cbmBuyEl=document.getElementById("cbmBuy")
-const cbmSellEl=document.getElementById("cbmSell")
-const cbmDiffEl=document.getElementById("cbmDiff")
-const profitCbmEl=document.getElementById("profitCbm")
-const profitTotalEl=document.getElementById("profitTotal")
+})
