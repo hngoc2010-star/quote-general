@@ -11,7 +11,7 @@ margin:auto;
 background:white;
 padding:20px;
 border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
 h2{
@@ -28,7 +28,7 @@ font-weight:500;
 input,select{
 width:100%;
 padding:10px;
-margin-top:4px;
+margin-top:5px;
 border-radius:8px;
 border:1px solid #ccc;
 font-size:16px;
@@ -47,19 +47,11 @@ justify-content:space-between;
 margin:6px 0;
 }
 
-#customSize{
+#customBox{
 display:none;
 }
 
 .profitRow{
-font-weight:bold;
 font-size:18px;
-}
-
-.positive{
-color:#0a8f2e;
-}
-
-.negative{
-color:#c0392b;
+font-weight:bold;
 }
