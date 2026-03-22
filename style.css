@@ -34,6 +34,11 @@ border-radius:5px;
 border:1px solid #ccc;
 }
 
+#customWidthBox,
+#customLengthBox{
+display:none;
+}
+
 .results{
 margin-top:8px;
 background:white;
