@@ -1,124 +1,99 @@
-const inputs=document.querySelectorAll("input,select")
+const inputs = document.querySelectorAll("input,select");
 
-inputs.forEach(el=>{
-el.addEventListener("input",calculate)
-})
+inputs.forEach(i=>{
+i.addEventListener("input",calculate);
+});
 
-document.getElementById("size").addEventListener("change",updateSize)
+document.getElementById("size").addEventListener("change",sizeChange);
 
-function num(v){
-return Number(v)||0
+function formatNumber(x){
+return Number(x).toLocaleString("en-US");
 }
 
-function format(v){
-return v.toLocaleString("en-US",{maximumFractionDigits:2})
+function parseNum(v){
+return Number(v.replace(/,/g,""))||0;
 }
 
-function updateSize(){
+function sizeChange(){
 
-let size=document.getElementById("size").value
+const size=document.getElementById("size").value;
 
-let widthBox=document.getElementById("customWidthBox")
-let lengthBox=document.getElementById("customLengthBox")
+const custom=document.getElementById("customSize");
 
-let width=document.getElementById("width")
-let length=document.getElementById("length")
-
-if(size==="1220x2440"){
-
-widthBox.style.display="none"
-lengthBox.style.display="none"
-
-width.value=1220
-length.value=2440
-
+if(size==="custom"){
+custom.style.display="block";
 }
-
-else if(size==="915x1830"){
-
-widthBox.style.display="none"
-lengthBox.style.display="none"
-
-width.value=915
-length.value=1830
-
-}
-
 else{
 
-widthBox.style.display="block"
-lengthBox.style.display="block"
+custom.style.display="none";
 
+const s=size.split("x");
+
+document.getElementById("width").value=s[0];
+document.getElementById("length").value=s[1];
 }
 
-calculate()
-
+calculate();
 }
+
+document.querySelectorAll("input").forEach(el=>{
+
+el.addEventListener("keyup",()=>{
+
+let v=parseNum(el.value);
+
+if(v>0) el.value=formatNumber(v);
+
+});
+
+});
 
 function calculate(){
 
-let thickness=num(document.getElementById("thickness").value)
+const thickness=parseNum(document.getElementById("thickness").value);
 
-let width=num(document.getElementById("width").value)/1000
-let length=num(document.getElementById("length").value)/1000
+const width=parseNum(document.getElementById("width").value);
 
-let bundles=num(document.getElementById("bundles").value)
-let pcsBundle=num(document.getElementById("pcsBundle").value)
+const length=parseNum(document.getElementById("length").value);
 
-let pricePc=num(document.getElementById("pricePc").value)
-let priceCbm=num(document.getElementById("priceCbm").value)
+const bundles=parseNum(document.getElementById("bundles").value);
 
-let usd=num(document.getElementById("usdRate").value)
-let logistics=num(document.getElementById("logistics").value)
+const pcsBundle=parseNum(document.getElementById("pcsBundle").value);
 
-let cfr=num(document.getElementById("cfr").value)
+const exwCbm=parseNum(document.getElementById("exwCbm").value);
 
-let rule=num(document.getElementById("rule").value)
+const usdRate=parseNum(document.getElementById("usdRate").value);
 
-let thicknessSell=thickness+rule
+const logistics=parseNum(document.getElementById("logistics").value);
 
-let totalPcs=bundles*pcsBundle
+const cfrUsd=parseNum(document.getElementById("cfrUsd").value);
 
-let cbmBuy=width*length*(thickness/1000)*totalPcs
-let cbmSell=width*length*(thicknessSell/1000)*totalPcs
+const rule=parseFloat(document.getElementById("rule").value)||0;
 
-let cbmDiff=cbmSell-cbmBuy
+const totalPcs=bundles*pcsBundle;
 
-let exw=0
+const cbmBuy=(width/1000)*(length/1000)*(thickness/1000)*totalPcs;
 
-if(pricePc>0){
-exw=pricePc*totalPcs
-}else{
-exw=priceCbm*cbmBuy
-}
+const cbmSell=(width/1000)*(length/1000)*((thickness+rule)/1000)*totalPcs;
 
-let revenue=cfr*usd*cbmSell
+const cbmDiff=cbmSell-cbmBuy;
 
-let totalCost=exw+logistics
+const profitCbm=(cfrUsd*usdRate)-exwCbm-logistics;
 
-let profit=revenue-totalCost
+const totalProfit=profitCbm*cbmSell;
 
-let profitCbm=cbmSell?profit/cbmSell:0
+document.getElementById("totalPcs").innerText=formatNumber(totalPcs);
 
-document.getElementById("totalPcs").innerText=format(totalPcs)
-document.getElementById("cbmBuy").innerText=format(cbmBuy)
-document.getElementById("cbmSell").innerText=format(cbmSell)
-document.getElementById("cbmDiff").innerText=format(cbmDiff)
+document.getElementById("cbmBuy").innerText=cbmBuy.toFixed(3);
 
-let profitTotal=document.getElementById("profitTotal")
-let profitCbmEl=document.getElementById("profitCbm")
+document.getElementById("cbmSell").innerText=cbmSell.toFixed(3);
 
-profitTotal.innerText=format(profit)
-profitCbmEl.innerText=format(profitCbm)
+document.getElementById("cbmDiff").innerText=cbmDiff.toFixed(3);
 
-if(profit<0){
-profitTotal.className="red"
-profitCbmEl.className="red"
-}else{
-profitTotal.className="blue"
-profitCbmEl.className="blue"
-}
+document.getElementById("profitCbm").innerText=formatNumber(profitCbm);
+
+document.getElementById("totalProfit").innerText=formatNumber(totalProfit);
 
 }
 
-updateSize()
+sizeChange();
