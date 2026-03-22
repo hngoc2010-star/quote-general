@@ -1,6 +1,6 @@
 body{
-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-background:#f5f5f7;
+font-family:-apple-system,BlinkMacSystemFont;
+background:#f2f2f7;
 margin:0;
 padding:20px;
 }
@@ -11,10 +11,10 @@ margin:auto;
 background:white;
 padding:20px;
 border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-h1{
+h2{
 text-align:center;
 margin-bottom:20px;
 }
@@ -29,15 +29,15 @@ input,select{
 width:100%;
 padding:10px;
 margin-top:4px;
-border:1px solid #ccc;
 border-radius:8px;
+border:1px solid #ccc;
 font-size:16px;
 }
 
 .result{
 margin-top:20px;
+background:#f7f7f7;
 padding:15px;
-background:#f0f0f0;
 border-radius:10px;
 }
 
@@ -45,9 +45,21 @@ border-radius:10px;
 display:flex;
 justify-content:space-between;
 margin:6px 0;
-font-weight:500;
 }
 
 #customSize{
 display:none;
+}
+
+.profitRow{
+font-weight:bold;
+font-size:18px;
+}
+
+.positive{
+color:#0a8f2e;
+}
+
+.negative{
+color:#c0392b;
 }
