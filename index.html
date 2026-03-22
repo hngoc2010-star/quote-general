@@ -1,84 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=430, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plywood Profit</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>Plywood Profit</h2>
-
-<div class="grid">
+<h1>Plywood Profit</h1>
 
 <label>Thickness (mm)</label>
-<input id="thickness" type="number" step="0.5">
+<input id="thickness" type="number" step="0.5" inputmode="decimal">
 
 <label>Size</label>
 <select id="size">
-<option value="1220x2440">1220 × 2440</option>
-<option value="915x1830">915 × 1830</option>
+<option value="1220x2440">1220 x 2440</option>
+<option value="915x1830">915 x 1830</option>
 <option value="custom">Custom</option>
 </select>
 
-<div id="customWidthBox">
+<div id="customSize">
 <label>Width (mm)</label>
-<input id="width" type="number">
-</div>
+<input id="width" type="text" inputmode="numeric">
 
-<div id="customLengthBox">
 <label>Length (mm)</label>
-<input id="length" type="number">
+<input id="length" type="text" inputmode="numeric">
 </div>
 
 <label>Bundles</label>
-<input id="bundles" type="number">
+<input id="bundles" type="text" inputmode="numeric">
 
 <label>PCS / Bundle</label>
-<input id="pcsBundle" type="number">
+<input id="pcsBundle" type="text" inputmode="numeric">
 
 <label>EXW VND / PC</label>
-<input id="pricePc" type="number">
+<input id="exwPc" type="text" inputmode="numeric">
 
 <label>EXW VND / CBM</label>
-<input id="priceCbm" type="number">
+<input id="exwCbm" type="text" inputmode="numeric">
 
 <label>USD Rate</label>
-<input id="usdRate" type="number">
+<input id="usdRate" type="text" inputmode="numeric">
 
 <label>Logistics VND</label>
-<input id="logistics" type="number">
+<input id="logistics" type="text" inputmode="numeric">
 
 <label>CFR USD / CBM</label>
-<input id="cfr" type="number">
+<input id="cfrUsd" type="text" inputmode="numeric">
 
 <label>Thickness Rule</label>
 <select id="rule">
 <option value="0.5">+0.5</option>
-<option value="0">0</option>
-<option value="-0.5">-0.5</option>
+<option value="0.7">+0.7</option>
+<option value="1">+1</option>
 </select>
 
-</div>
-
-<div class="results">
+<div class="result">
 
 <div>Total PCS <span id="totalPcs">0</span></div>
 <div>CBM Buy <span id="cbmBuy">0</span></div>
 <div>CBM Sell <span id="cbmSell">0</span></div>
 <div>CBM Diff <span id="cbmDiff">0</span></div>
 <div>Profit / CBM <span id="profitCbm">0</span></div>
-<div>Total Profit <span id="profitTotal">0</span></div>
+<div>Total Profit <span id="totalProfit">0</span></div>
 
 </div>
 
