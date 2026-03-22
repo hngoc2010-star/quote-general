@@ -1,93 +1,86 @@
 const inputs=document.querySelectorAll("input,select")
 
 inputs.forEach(el=>{
-el.addEventListener("input",handleInput)
+el.addEventListener("input",calculate)
 })
 
-function parseNum(v){
-return Number(v.replace(/,/g,""))||0
+document.getElementById("size").addEventListener("change",updateSize)
+
+function num(v){
+return Number(v)||0
 }
 
-function formatNum(v){
+function format(v){
 return v.toLocaleString("en-US",{maximumFractionDigits:2})
-}
-
-function formatInput(el){
-
-let start=el.selectionStart
-let value=el.value.replace(/,/g,"")
-
-if(value==="") return
-
-let num=Number(value)
-
-if(isNaN(num)) return
-
-let formatted=num.toLocaleString("en-US")
-
-el.value=formatted
-
-let newPos=formatted.length
-el.setSelectionRange(newPos,newPos)
-
-}
-
-function handleInput(e){
-
-let el=e.target
-
-if(el.type!=="number"){
-formatInput(el)
-}
-
-updateSize()
-
-calculate()
-
 }
 
 function updateSize(){
 
 let size=document.getElementById("size").value
 
+let widthBox=document.getElementById("customWidthBox")
+let lengthBox=document.getElementById("customLengthBox")
+
+let width=document.getElementById("width")
+let length=document.getElementById("length")
+
 if(size==="1220x2440"){
+
+widthBox.style.display="none"
+lengthBox.style.display="none"
+
 width.value=1220
 length.value=2440
+
 }
 
-if(size==="915x1830"){
+else if(size==="915x1830"){
+
+widthBox.style.display="none"
+lengthBox.style.display="none"
+
 width.value=915
 length.value=1830
+
 }
+
+else{
+
+widthBox.style.display="block"
+lengthBox.style.display="block"
+
+}
+
+calculate()
 
 }
 
 function calculate(){
 
-let thickness=parseNum(thickness.value)
+let thickness=num(document.getElementById("thickness").value)
 
-let widthM=parseNum(width.value)/1000
-let lengthM=parseNum(length.value)/1000
+let width=num(document.getElementById("width").value)/1000
+let length=num(document.getElementById("length").value)/1000
 
-let bundles=parseNum(bundles.value)
-let pcsBundle=parseNum(pcsBundle.value)
+let bundles=num(document.getElementById("bundles").value)
+let pcsBundle=num(document.getElementById("pcsBundle").value)
 
-let pricePc=parseNum(pricePc.value)
-let priceCbm=parseNum(priceCbm.value)
+let pricePc=num(document.getElementById("pricePc").value)
+let priceCbm=num(document.getElementById("priceCbm").value)
 
-let usd=parseNum(usdRate.value)
-let logisticsCost=parseNum(logistics.value)
+let usd=num(document.getElementById("usdRate").value)
+let logistics=num(document.getElementById("logistics").value)
 
-let cfrPrice=parseNum(cfr.value)
+let cfr=num(document.getElementById("cfr").value)
 
-let rule=parseNum(rule.value)
+let rule=num(document.getElementById("rule").value)
 
 let thicknessSell=thickness+rule
 
 let totalPcs=bundles*pcsBundle
 
-let cbmBuy=widthM*lengthM*(thickness/1000)*totalPcs
-let cbmSell=widthM*lengthM*(thicknessSell/1000)*totalPcs
+let cbmBuy=width*length*(thickness/1000)*totalPcs
+let cbmSell=width*length*(thicknessSell/1000)*totalPcs
 
 let cbmDiff=cbmSell-cbmBuy
 
@@ -99,28 +92,33 @@ exw=pricePc*totalPcs
 exw=priceCbm*cbmBuy
 }
 
-let revenue=cfrPrice*usd*cbmSell
+let revenue=cfr*usd*cbmSell
 
-let totalCost=exw+logisticsCost
+let totalCost=exw+logistics
 
 let profit=revenue-totalCost
 
 let profitCbm=cbmSell?profit/cbmSell:0
 
-totalPcs.innerText=formatNum(totalPcs)
-cbmBuy.innerText=formatNum(cbmBuy)
-cbmSell.innerText=formatNum(cbmSell)
-cbmDiff.innerText=formatNum(cbmDiff)
+document.getElementById("totalPcs").innerText=format(totalPcs)
+document.getElementById("cbmBuy").innerText=format(cbmBuy)
+document.getElementById("cbmSell").innerText=format(cbmSell)
+document.getElementById("cbmDiff").innerText=format(cbmDiff)
 
-profitTotal.innerText=formatNum(profit)
-profitCbm.innerText=formatNum(profitCbm)
+let profitTotal=document.getElementById("profitTotal")
+let profitCbmEl=document.getElementById("profitCbm")
+
+profitTotal.innerText=format(profit)
+profitCbmEl.innerText=format(profitCbm)
 
 if(profit<0){
 profitTotal.className="red"
-profitCbm.className="red"
+profitCbmEl.className="red"
 }else{
 profitTotal.className="blue"
-profitCbm.className="blue"
+profitCbmEl.className="blue"
 }
 
 }
+
+updateSize()
