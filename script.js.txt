@@ -1,99 +1,65 @@
-const inputs = document.querySelectorAll("input,select");
-
-inputs.forEach(i=>{
-i.addEventListener("input",calculate);
-});
-
-document.getElementById("size").addEventListener("change",sizeChange);
-
-function formatNumber(x){
-return Number(x).toLocaleString("en-US");
+body{
+font-family:-apple-system,BlinkMacSystemFont;
+background:#f2f2f7;
+margin:0;
+padding:20px;
 }
 
-function parseNum(v){
-return Number(v.replace(/,/g,""))||0;
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-function sizeChange(){
-
-const size=document.getElementById("size").value;
-
-const custom=document.getElementById("customSize");
-
-if(size==="custom"){
-custom.style.display="block";
-}
-else{
-
-custom.style.display="none";
-
-const s=size.split("x");
-
-document.getElementById("width").value=s[0];
-document.getElementById("length").value=s[1];
+h2{
+text-align:center;
+margin-bottom:20px;
 }
 
-calculate();
+label{
+display:block;
+margin-top:12px;
+font-weight:500;
 }
 
-document.querySelectorAll("input").forEach(el=>{
-
-el.addEventListener("keyup",()=>{
-
-let v=parseNum(el.value);
-
-if(v>0) el.value=formatNumber(v);
-
-});
-
-});
-
-function calculate(){
-
-const thickness=parseNum(document.getElementById("thickness").value);
-
-const width=parseNum(document.getElementById("width").value);
-
-const length=parseNum(document.getElementById("length").value);
-
-const bundles=parseNum(document.getElementById("bundles").value);
-
-const pcsBundle=parseNum(document.getElementById("pcsBundle").value);
-
-const exwCbm=parseNum(document.getElementById("exwCbm").value);
-
-const usdRate=parseNum(document.getElementById("usdRate").value);
-
-const logistics=parseNum(document.getElementById("logistics").value);
-
-const cfrUsd=parseNum(document.getElementById("cfrUsd").value);
-
-const rule=parseFloat(document.getElementById("rule").value)||0;
-
-const totalPcs=bundles*pcsBundle;
-
-const cbmBuy=(width/1000)*(length/1000)*(thickness/1000)*totalPcs;
-
-const cbmSell=(width/1000)*(length/1000)*((thickness+rule)/1000)*totalPcs;
-
-const cbmDiff=cbmSell-cbmBuy;
-
-const profitCbm=(cfrUsd*usdRate)-exwCbm-logistics;
-
-const totalProfit=profitCbm*cbmSell;
-
-document.getElementById("totalPcs").innerText=formatNumber(totalPcs);
-
-document.getElementById("cbmBuy").innerText=cbmBuy.toFixed(3);
-
-document.getElementById("cbmSell").innerText=cbmSell.toFixed(3);
-
-document.getElementById("cbmDiff").innerText=cbmDiff.toFixed(3);
-
-document.getElementById("profitCbm").innerText=formatNumber(profitCbm);
-
-document.getElementById("totalProfit").innerText=formatNumber(totalProfit);
-
+input,select{
+width:100%;
+padding:10px;
+margin-top:4px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
 }
 
-sizeChange();
+.result{
+margin-top:20px;
+background:#f7f7f7;
+padding:15px;
+border-radius:10px;
+}
+
+.result div{
+display:flex;
+justify-content:space-between;
+margin:6px 0;
+}
+
+#customSize{
+display:none;
+}
+
+.profitRow{
+font-weight:bold;
+font-size:18px;
+}
+
+.positive{
+color:#0a8f2e;
+}
+
+.negative{
+color:#c0392b;
+}
