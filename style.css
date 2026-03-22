@@ -1,65 +1,53 @@
 body{
-font-family:-apple-system;
-background:#f4f6f8;
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+background:#f5f5f7;
 margin:0;
-padding:6px;
+padding:20px;
 }
 
 .container{
-width:410px;
+max-width:500px;
 margin:auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
-h2{
+h1{
 text-align:center;
-margin:4px 0 8px;
-font-size:20px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:4px 6px;
+margin-bottom:20px;
 }
 
 label{
-font-size:12px;
+display:block;
+margin-top:12px;
+font-weight:500;
 }
 
 input,select{
-height:30px;
-font-size:15px;
-padding:2px 4px;
-border-radius:5px;
+width:100%;
+padding:10px;
+margin-top:4px;
 border:1px solid #ccc;
-}
-
-#customWidthBox,
-#customLengthBox{
-display:none;
-}
-
-.results{
-margin-top:8px;
-background:white;
-padding:8px;
 border-radius:8px;
 font-size:16px;
-box-shadow:0 2px 5px rgba(0,0,0,0.08);
 }
 
-.results div{
+.result{
+margin-top:20px;
+padding:15px;
+background:#f0f0f0;
+border-radius:10px;
+}
+
+.result div{
 display:flex;
 justify-content:space-between;
-padding:2px 0;
+margin:6px 0;
+font-weight:500;
 }
 
-.red{
-color:red;
-font-weight:600;
-}
-
-.blue{
-color:#0066ff;
-font-weight:600;
+#customSize{
+display:none;
 }
